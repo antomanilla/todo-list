@@ -19,7 +19,6 @@ body {
 
 .filasporborrar {
 	background-color: #FF918F !important;
-	/*transition: 0.5s; */
 }
 
 #actividades {
@@ -41,9 +40,6 @@ label[for=fecha] {
 #formulario {
 	width: 40%;
 	min-width: 250px;
-/*	margin-left: auto;
-	margin-right: auto; */
-
 }
 
 .form-container {
