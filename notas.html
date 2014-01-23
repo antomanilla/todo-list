@@ -30,10 +30,16 @@
         <tr id="fila{{id}}">
           <td>{{descripcion}}</td>
           <td>{{fecha}}</td>
-          <td><span class="glyphicon glyphicon-remove borrado" data-toggle="confirmation"></span></td>
+          <td><span class="glyphicon glyphicon-remove borrado"></span></td>
         </tr>
         {{/each}}
       </table>
+      <div id="confirmacion">
+        <div class="btn-group">
+          <button type="button" class="btn btn-primary btn-sm confirmado"> <span class="glyphicon glyphicon-ok-circle"></span> Si </button> 
+          <button type="button" class="btn btn-default btn-sm cancelado"> <span class="glyphicon glyphicon-remove-circle"></span> No </button>
+        </div>
+      </div>
     </div>
   <script src="http://code.jquery.com/jquery-2.0.3.js"></script>
   <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>

@@ -1,11 +1,26 @@
 console.log("Borrado.js!");
 
-$(".borrado").confirmation({singleton: true, onComplete: borrado})
+$(".borrado").popover({title: estasseguro, content: $("#confirmacion").html(), html: true});
+$(".borrado").on("hidden.bs.popover", function() {
+	$(this).next().remove();
+});
 
+$( document ).on( "click", ".confirmado", borrado);
+$( document ).on( "click", ".cancelado", cancelado);
 
+function cancelado () {
+	$(this).parents(".popover").prev().popover('destroy');
+}
+
+function estasseguro () {
+	var row = $(this).parent().parent();
+	return ("¿Estas seguro que queres borrar la actividad " + 
+	$(row.children()[0]).html() + " del dia " +  
+	$(row.children()[1]).html() + "?" );
+}
 
 function borrado () {
-	var selectedRow = $(this).parent().parent();
+	var selectedRow = $(this).parents("tr");
 	var filaId = selectedRow.attr("id");
 	var idNum = filaId.substring(4);
 	var jqxhr = $.ajax( "borrarFila?fila=" + idNum )

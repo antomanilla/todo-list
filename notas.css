@@ -55,3 +55,7 @@ label[for=fecha] {
 #actividades > tbody > tr {
 	transition: 0.5s;
 }
+
+#confirmacion {
+	display: none;
+}
