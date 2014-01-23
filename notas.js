@@ -3,20 +3,30 @@ var handlebars = require('handlebars');
 var sqlite = require('sqlite3');
 var fs = require('fs');
 var qs = require('querystring');
+var crypto = require ('crypto');
 
 var db = new sqlite.Database("notas.db");
 
+var md5 = function(x) {
+  var md5sum = crypto.createHash('md5');
+  md5sum.update(x);
+  return md5sum.digest('hex');
+}
+
 http.createServer(function(request, response) {
-  var staticFiles = ["/notas.css", "/borrado.js", "/bootstrap-confirmation.js" ];
+  var staticFiles = ["/notas.css", "/borrado.js", "/bootstrap-confirmation.js", '/', "/inicio.css"];
 
   if ( staticFiles.indexOf(request.url) !== -1) {
+    if (request.url == '/') {
+      request.url = "/inicio.html";
+    }
     var file = request.url.substring(1);
     var extension = file.substring(file.indexOf(".") + 1);
     fs.readFile(file, {encoding: 'utf-8'}, function(error, source) {
       response.writeHead(200, {'Content-type': 'text/' + extension});
       response.end(source);
     });
-  } else if (request.method == "POST") {
+  } else if (request.url == "/agregarnota") {
     console.log("Holaaaa...");
     var body = '';
     request.on('data', function(chunk) {
@@ -28,6 +38,25 @@ http.createServer(function(request, response) {
       console.log(datos);
       db.run("INSERT INTO notas (descripcion, fecha) VALUES (?, ?)", [datos.descripcion, datos.fecha], showForm);
     });
+  } else if (request.url == "/signin"){
+    var body = '';
+    request.on('data', function(chunk) {
+      body += chunk;
+    });
+    request.on('end', function() {
+      var datos = qs.parse(body);
+      db.get("SELECT * FROM usuarios WHERE usuario = ? AND password = ?", [datos.usuario, md5(datos.password)], function (error, row) {
+        if (error) throw error;
+        if (row) { 
+          showForm();
+        } else {
+          response.writeHead(200, {'Content-type': 'text/plain'});
+          response.end("Usuario o contraseña no existen.");
+        }
+      } );
+    })
+
+   
   } else if (request.url.substring(0,11) == "/borrarFila"){
       var signo = request.url.indexOf("?");
       var numFila = request.url.substring(signo+1);

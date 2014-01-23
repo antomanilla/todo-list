@@ -1,0 +1,21 @@
+body {
+  height: 100%;
+  background-color: gray;
+}
+
+html {
+  height: 100%;
+}
+
+.container {
+  background-color: white;
+  height: 100%;
+}
+
+#formulario {
+  width: 50%;
+  margin-top: 100px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
